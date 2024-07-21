@@ -1,0 +1,74 @@
+plugins {
+    id 'java-library'
+    id "com.vanniktech.maven.publish" version "0.29.0"
+}
+
+import com.vanniktech.maven.publish.SonatypeHost
+
+group = 'net.staticstudios'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+}
+
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, true)
+    signAllPublications()
+    signing {
+        useGpgCmd()
+    }
+
+    coordinates(group, "menus", version)
+
+    pom {
+        name.set('Static Menus')
+        description.set('A simple menu library for managing GUIs in Paper plugins.')
+        url.set('https://github.com/StaticStudios/static-menus')
+        licenses {
+            license {
+                name.set('The Apache License, Version 2.0')
+                url.set('http://www.apache.org/licenses/LICENSE-2.0.txt')
+            }
+        }
+        developers {
+            developer {
+                id.set('staticstudios')
+                name.set('Static Studios')
+                email.set('support@staticstudios.net')
+            }
+        }
+        scm {
+            connection.set('scm:git:git://github.com/StaticStudios/static-menus.git')
+            developerConnection.set('scm:git:ssh://github.com:StaticStudios/static-menus.git')
+            url.set('https://github.com/StaticStudios/static-menus')
+        }
+    }
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT"
+}
+
+def targetJavaVersion = 21
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
