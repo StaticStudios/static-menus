@@ -31,8 +31,8 @@ public interface Button {
      * @param itemStack the item stack to use
      * @return the created button
      */
-    static Button fromItemStack(ItemStack itemStack) { //todo: this should return a mutable button
-        return new SimpleButton(itemStack, Map.of());
+    static MutableButton fromItemStack(ItemStack itemStack) {
+        return new MutableButton(itemStack, Map.of());
     }
 
     /**

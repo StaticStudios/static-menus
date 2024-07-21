@@ -28,7 +28,6 @@ public class PagedMenu implements Menu {
     private final char marker;
     private final Button fallback;
     private Inventory currentPageInventory;
-    private int cachedPage;
     private int page;
     private int nextPageButtonIndex = -1;
     private int previousPageButtonIndex = -1;
@@ -45,7 +44,6 @@ public class PagedMenu implements Menu {
         this.buttons = new ArrayList<>();
         this.buttons.addAll(buttons);
         this.page = 0;
-        this.cachedPage = 0;
         this.shrinkToFit = shrinkToFit;
         this.marker = marker;
         this.fallback = fallback;
@@ -192,7 +190,7 @@ public class PagedMenu implements Menu {
                     } else if (c == 'P') {
                         previousPageButtonIndex = i + j - skippedLines * 9;
                     }
-                    line[j] = buttonMappings.getOrDefault(template.charAt(i), options.defaultPlaceholder());
+                    line[j] = buttonMappings.getOrDefault(c, options.defaultPlaceholder());
                 }
             }
             lines.add(line);
@@ -202,7 +200,6 @@ public class PagedMenu implements Menu {
 
         //Recreate the inventory if the size or page number has changed
         if (currentPageInventory == null || size != currentPageInventory.getSize()) {
-            cachedPage = page;
             Inventory prevInventory = currentPageInventory;
             currentPageInventory = Bukkit.createInventory(this, size, inventoryTitle);
 
