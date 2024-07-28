@@ -156,6 +156,31 @@ public class MutableButton implements Button {
         actions.remove(action);
     }
 
+    /**
+     * Add an action to the button for a left click
+     * @param buttonAction the action (to run)
+     */
+    public void onLeftClick(ButtonAction buttonAction) {
+        addAction(Action.LEFT_CLICK, buttonAction);
+    }
+
+    /**
+     * Add an action to the button for a right click
+     * @param buttonAction the action (to run)
+     */
+    public void onRightClick(ButtonAction buttonAction) {
+        addAction(Action.RIGHT_CLICK, buttonAction);
+    }
+
+    /**
+     * Add an action to the button for both left and right clicks
+     * @param buttonAction the action (to run)
+     */
+    public void onClick(ButtonAction buttonAction) {
+        onLeftClick(buttonAction);
+        onRightClick(buttonAction);
+    }
+
     @Nullable
     @Override
     public ItemStack getItemRepresentation(MenuViewer viewer, Menu menu) {

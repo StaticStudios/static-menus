@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 
 public interface Button {
@@ -32,7 +33,7 @@ public interface Button {
      * @return the created button
      */
     static MutableButton fromItemStack(ItemStack itemStack) {
-        return new MutableButton(itemStack, Map.of());
+        return new MutableButton(itemStack, new HashMap<>());
     }
 
     /**

@@ -6,7 +6,7 @@ plugins {
 import com.vanniktech.maven.publish.SonatypeHost
 
 group = 'net.staticstudios'
-version = '1.0.2'
+version = '1.0.3'
 
 repositories {
     mavenCentral()
