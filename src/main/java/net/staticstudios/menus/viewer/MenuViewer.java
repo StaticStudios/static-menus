@@ -17,6 +17,7 @@ public interface MenuViewer {
 
     default void closeMenu() {
         getPlayer().closeInventory();
+        StaticMenus.getHistory(this).clear();
     }
 
     void sendMessage(Component message);
