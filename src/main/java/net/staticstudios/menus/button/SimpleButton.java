@@ -3,6 +3,7 @@ package net.staticstudios.menus.button;
 import net.staticstudios.menus.action.ButtonAction;
 import net.staticstudios.menus.menu.Menu;
 import net.staticstudios.menus.viewer.MenuViewer;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +26,8 @@ public class SimpleButton implements Button {
     protected SimpleButton(ItemStack source, Map<Action, List<ButtonAction>> actions) {
         this.itemStack = new ItemStack(source);
         this.actions = actions;
+
+        this.itemStack.editMeta(meta -> meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP));
     }
 
     @Nullable
