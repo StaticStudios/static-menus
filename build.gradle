@@ -1,12 +1,11 @@
 plugins {
     id 'java-library'
-    id "com.vanniktech.maven.publish" version "0.29.0"
+    id 'maven-publish'
 }
 
-import com.vanniktech.maven.publish.SonatypeHost
 
 group = 'net.staticstudios'
-version = '1.0.5'
+version = '1.0.6-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -16,40 +15,56 @@ repositories {
     }
 }
 
+tasks.publish {
+    dependsOn(build)
+}
 
-mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, true)
-    signAllPublications()
-    signing {
-        useGpgCmd()
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    repositories {
+        maven {
+            credentials(org.gradle.api.credentials.PasswordCredentials.class)
+            name = "StaticStudios"
+            var base = "https://repo.staticstudios.net"
+            var releasesRepoUrl = "$base/releases/"
+            var snapshotsRepoUrl = "$base/snapshots/"
+            setUrl((version.toString().endsWith("SNAPSHOT")) ? snapshotsRepoUrl : releasesRepoUrl)
+        }
     }
-
-    coordinates(group, "menus", version)
-
-    pom {
-        name.set('Static Menus')
-        description.set('A simple menu library for managing GUIs in Paper plugins.')
-        url.set('https://github.com/StaticStudios/static-menus')
-        licenses {
-            license {
-                name.set('The Apache License, Version 2.0')
-                url.set('http://www.apache.org/licenses/LICENSE-2.0.txt')
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom {
+                name = 'Static Menus'
+                description = 'A simple menu library for managing GUIs in Paper plugins.'
+                url = 'https://github.com/StaticStudios/static-menus'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'staticstudios'
+                        name = 'Static Studios'
+                        email = 'support@staticstudios.net'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/StaticStudios/static-menus.git'
+                    developerConnection = 'scm:git:ssh://github.com:StaticStudios/static-menus.git'
+                    url = 'https://github.com/StaticStudios/static-menus'
+                }
             }
-        }
-        developers {
-            developer {
-                id.set('staticstudios')
-                name.set('Static Studios')
-                email.set('support@staticstudios.net')
-            }
-        }
-        scm {
-            connection.set('scm:git:git://github.com/StaticStudios/static-menus.git')
-            developerConnection.set('scm:git:ssh://github.com:StaticStudios/static-menus.git')
-            url.set('https://github.com/StaticStudios/static-menus')
         }
     }
 }
+
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT"
