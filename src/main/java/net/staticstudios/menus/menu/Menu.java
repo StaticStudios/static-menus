@@ -60,7 +60,7 @@ public interface Menu extends InventoryHolder {
      * Open the menu
      */
     default void open() {
-        Menu previous = StaticMenus.getHistory(getViewer()).getLatest();
+        Menu previous = StaticMenus.getHistory(getViewer()).peek();
         open(false, previous == null || !previous.getId().equals(this.getId())); //if we are opening a new menu, push it to the history
     }
 
