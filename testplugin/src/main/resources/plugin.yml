@@ -1,0 +1,9 @@
+name: TestMenuPlugin
+description: 'A test plugin for static-menus'
+version: '${version}'
+main: net.staticstudios.testplugin.TestMenuPlugin
+api-version: '1.20'
+commands:
+  test:
+    permission: staticmenus.testcommand
+    description: 'A testing command'
