@@ -2,7 +2,7 @@ package net.staticstudios.menus.menu;
 
 import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.StaticMenus;
-import net.staticstudios.menus.action.Action;
+import net.staticstudios.menus.action.ViewerAction;
 import net.staticstudios.menus.button.Button;
 import net.staticstudios.menus.options.MenuOptions;
 import net.staticstudios.menus.viewer.MenuViewer;
@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 public class PagedMenuBuilder implements Cloneable, MenuBuilder {
     private final boolean mutable;
-    private final Map<Menu.Action, List<Action>> actions = new HashMap<>();
+    private final Map<Menu.Action, List<ViewerAction>> actions = new HashMap<>();
     private final Map<Character, Button> buttonMappings = new HashMap<>();
     private final List<Button> buttons = new ArrayList<>();
     private final String template;
@@ -75,9 +75,9 @@ public class PagedMenuBuilder implements Cloneable, MenuBuilder {
      * @param action The action
      * @return The builder
      */
-    public PagedMenuBuilder onOpen(Action action) {
+    public PagedMenuBuilder onOpen(ViewerAction action) {
         PagedMenuBuilder builder = clone();
-        List<Action> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.OPEN, new ArrayList<>()));
+        List<ViewerAction> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.OPEN, new ArrayList<>()));
         actions.add(action);
         builder.actions.put(Menu.Action.OPEN, actions);
         return builder;
@@ -89,9 +89,9 @@ public class PagedMenuBuilder implements Cloneable, MenuBuilder {
      * @param action The action
      * @return The builder
      */
-    public PagedMenuBuilder onClose(Action action) {
+    public PagedMenuBuilder onClose(ViewerAction action) {
         PagedMenuBuilder builder = clone();
-        List<Action> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.CLOSE, new ArrayList<>()));
+        List<ViewerAction> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.CLOSE, new ArrayList<>()));
         actions.add(action);
         builder.actions.put(Menu.Action.CLOSE, actions);
         return builder;
@@ -103,9 +103,9 @@ public class PagedMenuBuilder implements Cloneable, MenuBuilder {
      * @param action The action
      * @return The builder
      */
-    public PagedMenuBuilder onNextPage(Action action) {
+    public PagedMenuBuilder onNextPage(ViewerAction action) {
         PagedMenuBuilder builder = clone();
-        List<Action> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.NEXT_PAGE, new ArrayList<>()));
+        List<ViewerAction> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.NEXT_PAGE, new ArrayList<>()));
         actions.add(action);
         builder.actions.put(Menu.Action.NEXT_PAGE, actions);
         return builder;
@@ -117,9 +117,9 @@ public class PagedMenuBuilder implements Cloneable, MenuBuilder {
      * @param action The action
      * @return The builder
      */
-    public PagedMenuBuilder onPreviousPage(Action action) {
+    public PagedMenuBuilder onPreviousPage(ViewerAction action) {
         PagedMenuBuilder builder = clone();
-        List<Action> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.PREVIOUS_PAGE, new ArrayList<>()));
+        List<ViewerAction> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.PREVIOUS_PAGE, new ArrayList<>()));
         actions.add(action);
         builder.actions.put(Menu.Action.PREVIOUS_PAGE, actions);
         return builder;

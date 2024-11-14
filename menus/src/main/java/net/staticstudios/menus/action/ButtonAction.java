@@ -5,7 +5,7 @@ import net.staticstudios.menus.viewer.MenuViewer;
 
 import java.util.function.Function;
 
-public interface ButtonAction extends Action {
+public interface ButtonAction extends ViewerAction {
     static ButtonAction openMenu(Menu menu) {
         return new OpenMenuAction(menuViewer -> menu);
     }

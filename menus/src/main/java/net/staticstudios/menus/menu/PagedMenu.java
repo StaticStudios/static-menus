@@ -2,6 +2,7 @@ package net.staticstudios.menus.menu;
 
 import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.StaticMenus;
+import net.staticstudios.menus.action.ViewerAction;
 import net.staticstudios.menus.button.Button;
 import net.staticstudios.menus.options.MenuOptions;
 import net.staticstudios.menus.viewer.MenuViewer;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class PagedMenu implements Menu {
     private final Component inventoryTitle;
     private final String id;
-    private final Map<Action, List<net.staticstudios.menus.action.Action>> actions;
+    private final Map<Action, List<ViewerAction>> actions;
     private final List<Button> buttons;
     private final MenuViewer viewer;
     private final MenuOptions options;
@@ -32,7 +33,7 @@ public class PagedMenu implements Menu {
     private int previousPageButtonIndex = -1;
     private List<Button[]> currentPageButtons;
 
-    public PagedMenu(String id, MenuViewer viewer, Component inventoryTitle, @NotNull Map<Action, List<net.staticstudios.menus.action.Action>> actions, String template, char marker, Button fallback, boolean shrinkToFit, List<Button> buttons, @NotNull Map<Character, Button> buttonMappings, @NotNull MenuOptions options) {
+    public PagedMenu(String id, MenuViewer viewer, Component inventoryTitle, @NotNull Map<Action, List<ViewerAction>> actions, String template, char marker, Button fallback, boolean shrinkToFit, List<Button> buttons, @NotNull Map<Character, Button> buttonMappings, @NotNull MenuOptions options) {
         this.inventoryTitle = inventoryTitle;
         this.id = id;
         this.actions = actions;

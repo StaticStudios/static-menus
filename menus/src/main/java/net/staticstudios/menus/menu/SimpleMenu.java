@@ -2,6 +2,7 @@ package net.staticstudios.menus.menu;
 
 import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.StaticMenus;
+import net.staticstudios.menus.action.ViewerAction;
 import net.staticstudios.menus.button.Button;
 import net.staticstudios.menus.options.MenuOptions;
 import net.staticstudios.menus.viewer.MenuViewer;
@@ -15,14 +16,14 @@ import java.util.Map;
 public class SimpleMenu implements Menu {
     private final Component inventoryTitle;
     private final String id;
-    private final Map<Action, List<net.staticstudios.menus.action.Action>> actions;
+    private final Map<Action, List<ViewerAction>> actions;
     private final int size;
     private final List<Button> buttons;
     private final MenuViewer viewer;
     private final MenuOptions options;
     private Inventory inventory;
 
-    public SimpleMenu(String id, MenuViewer viewer, Component inventoryTitle, int size, @NotNull Map<Action, List<net.staticstudios.menus.action.Action>> actions, @NotNull List<Button> buttons, @NotNull MenuOptions options) {
+    public SimpleMenu(String id, MenuViewer viewer, Component inventoryTitle, int size, @NotNull Map<Action, List<ViewerAction>> actions, @NotNull List<Button> buttons, @NotNull MenuOptions options) {
         this.inventoryTitle = inventoryTitle;
         this.id = id;
         this.actions = actions;
