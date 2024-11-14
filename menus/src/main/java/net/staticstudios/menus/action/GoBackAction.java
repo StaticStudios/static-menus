@@ -11,7 +11,7 @@ public class GoBackAction implements ButtonAction {
     @Override
     public void invoke(MenuViewer viewer) {
         StaticMenus.getHistory(viewer).pop();
-        Menu menuToOpen = StaticMenus.getHistory(viewer).peek();
+        Menu menuToOpen = StaticMenus.getHistory(viewer).isEmpty() ? null : StaticMenus.getHistory(viewer).peek();
 
         if (menuToOpen == null) {
             return;

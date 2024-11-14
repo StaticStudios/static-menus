@@ -1,0 +1,28 @@
+title: <light_purple>Hey <blue>There!
+fill-with: "placeholder:black"
+
+layout:
+  - "XXXXCXXXE"
+  - "XXXXAXXXX"
+  - "XBXXXXTXV"
+
+defs:
+  A:
+    item:
+      name: "Title"
+      lore:
+        - "Lore line 1"
+        - "Lore line 2"
+      material: "DIAMOND_SWORD"
+  B: "back:button"
+  T: "test:button"
+  E: "placeholder:empty"
+  V:
+    actions:
+      - command: "say I clicked the test button!"
+      - command: "say Hey guys"
+      - send-message: "hola!"
+      - close-menu
+    item:
+      name: "Close"
+      material: "BARRIER"
