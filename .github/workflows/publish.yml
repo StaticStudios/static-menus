@@ -1,5 +1,8 @@
-name: Java CI with Gradle
-on: [push]
+name: Publish to private repo
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
