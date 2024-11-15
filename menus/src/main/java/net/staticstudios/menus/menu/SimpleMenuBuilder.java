@@ -2,7 +2,7 @@ package net.staticstudios.menus.menu;
 
 import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.StaticMenus;
-import net.staticstudios.menus.action.MenuAction;
+import net.staticstudios.menus.action.ViewerAction;
 import net.staticstudios.menus.button.Button;
 import net.staticstudios.menus.options.MenuOptions;
 import net.staticstudios.menus.viewer.MenuViewer;
@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public class SimpleMenuBuilder implements Cloneable, MenuBuilder {
     private final boolean mutable;
-    private final Map<Menu.Action, List<MenuAction>> actions = new HashMap<>();
+    private final Map<Menu.Action, List<ViewerAction>> actions = new HashMap<>();
     private String id;
     private int size = -1;
     private Component title;
@@ -115,9 +115,9 @@ public class SimpleMenuBuilder implements Cloneable, MenuBuilder {
      * @param action The action
      * @return The builder
      */
-    public SimpleMenuBuilder onOpen(MenuAction action) {
+    public SimpleMenuBuilder onOpen(ViewerAction action) {
         SimpleMenuBuilder builder = clone();
-        List<MenuAction> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.OPEN, new ArrayList<>()));
+        List<ViewerAction> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.OPEN, new ArrayList<>()));
         actions.add(action);
         builder.actions.put(Menu.Action.OPEN, actions);
         return builder;
@@ -129,9 +129,9 @@ public class SimpleMenuBuilder implements Cloneable, MenuBuilder {
      * @param action The action
      * @return The builder
      */
-    public SimpleMenuBuilder onClose(MenuAction action) {
+    public SimpleMenuBuilder onClose(ViewerAction action) {
         SimpleMenuBuilder builder = clone();
-        List<MenuAction> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.CLOSE, new ArrayList<>()));
+        List<ViewerAction> actions = new ArrayList<>(builder.actions.getOrDefault(Menu.Action.CLOSE, new ArrayList<>()));
         actions.add(action);
         builder.actions.put(Menu.Action.CLOSE, actions);
         return builder;

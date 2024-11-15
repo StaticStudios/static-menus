@@ -5,7 +5,7 @@ import net.staticstudios.menus.viewer.MenuViewer;
 
 import java.util.function.Function;
 
-public interface ButtonAction {
+public interface ButtonAction extends ViewerAction {
     static ButtonAction openMenu(Menu menu) {
         return new OpenMenuAction(menuViewer -> menu);
     }
@@ -14,9 +14,19 @@ public interface ButtonAction {
         return new OpenMenuAction(menuSupplier);
     }
 
+    static ButtonAction closeMenu() {
+        return new CloseMenuAction();
+    }
+
     static ButtonAction goBack() {
         return new GoBackAction();
     }
 
-    void invoke(MenuViewer viewer);
+    static ButtonAction sendMessage(String message) {
+        return new SendMessageAction(message);
+    }
+
+    static ButtonAction command(String command) {
+        return new CommandAction(command);
+    }
 }

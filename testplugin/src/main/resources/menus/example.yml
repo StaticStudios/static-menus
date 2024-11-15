@@ -1,0 +1,79 @@
+title: <black>Skyblock
+fill-with: "placeholder:dark_gray"
+
+layout:
+  - "XXXXXXXXX"
+  - "XXSXIXCXX"
+  - "XXXsXAXXX"
+  - "XXcXVXDXX"
+  - "XXXXXXXXX"
+
+defs:
+  I:
+    actions:
+      - command: "island"
+    item:
+      name: "<green><bold>Your Island"
+      lore:
+        - "<green><bold>| <!bold><white>Manage your skyblock island"
+      material: OAK_SAPLING
+  A:
+    actions:
+      - command: "ah"
+    item:
+      name: "<gold><bold>Auction House"
+      lore:
+        - "<gold><bold>| <!bold><white>Buy and sell items"
+      material: CLOCK
+  S:
+    actions:
+      - close-menu
+      - command: "spawn"
+    item:
+      name: "<red><bold>Spawn"
+      lore:
+        - "<red><bold>| <!bold><white>Warp to spawn"
+      material: COMPASS
+  C:
+    actions:
+      - close-menu
+      - command: "crates"
+    item:
+      name: "<aqua><bold>Crates"
+      lore:
+        - "<aqua><bold>| <!bold><white>Warp to crates"
+      material: TRIPWIRE_HOOK
+  s:
+    actions:
+      - command: "shop"
+    item:
+      name: "<light_purple><bold>Shop"
+      lore:
+        - "<light_purple><bold>| <!bold><white>Spend your money"
+      material: CHEST
+  c:
+    actions:
+      - command: "challenges"
+    item:
+      name: "<yellow><bold>Challenges"
+      lore:
+        - "<yellow><bold>| <!bold><white>Challenge yourself and get rewards"
+      material: NETHERITE_SWORD
+  V:
+    actions:
+      - close-menu
+      - command: "vote"
+    item:
+      name: "<red><bold>Vote"
+      lore:
+        - "<red><bold>| <!bold><white>Vote and get crate keys"
+      material: NETHER_STAR
+  D:
+    actions:
+      - close-menu
+      - command: "discord"
+    item:
+      name: "<blue><bold>Discord"
+      lore:
+        - "<blue><bold>| <!bold><white>Join our discord"
+      material: PRISMARINE_SHARD

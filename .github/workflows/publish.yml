@@ -19,4 +19,4 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
       - name: Publish to Private Repository
-        run: ./gradlew publish -PStaticStudiosUsername=github -PStaticStudiosPassword=${{ secrets.REPOSITORY_SECRET }}
+        run: ./gradlew :menus:publish -PStaticStudiosUsername=github -PStaticStudiosPassword=${{ secrets.REPOSITORY_SECRET }}

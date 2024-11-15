@@ -2,6 +2,7 @@ package net.staticstudios.menus.menu;
 
 import net.staticstudios.menus.StaticMenus;
 import net.staticstudios.menus.button.Button;
+import net.staticstudios.menus.history.MenuHistory;
 import net.staticstudios.menus.options.MenuOptions;
 import net.staticstudios.menus.viewer.MenuViewer;
 import org.bukkit.inventory.InventoryHolder;
@@ -60,7 +61,8 @@ public interface Menu extends InventoryHolder {
      * Open the menu
      */
     default void open() {
-        Menu previous = StaticMenus.getHistory(getViewer()).peek();
+        MenuHistory history = StaticMenus.getHistory(getViewer());
+        Menu previous = history.isEmpty() ? null : history.peek();
         open(false, previous == null || !previous.getId().equals(this.getId())); //if we are opening a new menu, push it to the history
     }
 

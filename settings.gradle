@@ -1,2 +1,2 @@
 rootProject.name = 'menus'
-
+include 'testplugin', 'menus'
