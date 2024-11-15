@@ -26,7 +26,6 @@ public class MenuRegistry {
             throw new IllegalArgumentException("Menu with id " + id + " already exists");
         }
 
-        System.out.println("Registering menu with id " + id);
         registry.put(id, builder);
     }
 

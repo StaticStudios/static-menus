@@ -29,7 +29,7 @@ public class ButtonParser {
 
         int amount = config.getInt("item.amount", 1);
         String itemName = config.getString("item.name");
-        String itemMaterial = config.getString("item.material");
+        String itemMaterial = config.getString("item.material", config.getString("item.head-id"));
 
         if (itemName == null) {
             logger.warn("Invalid item name! {}.item.name", id);
@@ -37,11 +37,8 @@ public class ButtonParser {
         }
 
         if (itemMaterial == null) {
-            String skullId = config.getString("item.head-id");
-            if (skullId == null) {
-                logger.warn("Invalid item material/head-id! {}.item.material, {}.item.head-id", id, id);
-                return false;
-            }
+            logger.warn("Invalid item material/head-id for {}", id);
+            return false;
         }
 
         if (amount < 0) {
