@@ -11,6 +11,7 @@ Static Menus is a custom invenetory library made for Paper servers.
 
 ## How to use it
 To use the libray in your project you need to add the StaticStudios repository and declare the dependency.
+Make sure to replace `VERSION_HERE` with the latest version available.
 
 ```gradle
 repositories {
@@ -21,6 +22,6 @@ repositories {
 }
 
 dependencies {
-  implementation "net.staticstudios:menus:1.0.5"
+  implementation "net.staticstudios:menus:VERSION_HERE"
 }
 ```
