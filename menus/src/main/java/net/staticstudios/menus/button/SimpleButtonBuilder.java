@@ -79,6 +79,19 @@ public class SimpleButtonBuilder implements Cloneable, ButtonBuilder {
      * @param description the description
      * @return the builder
      */
+    public SimpleButtonBuilder componentDescription(List<Component> description) {
+        SimpleButtonBuilder builder = clone();
+        builder.description = description;
+
+        return builder;
+    }
+
+    /**
+     * Set the description of the button
+     *
+     * @param description the description
+     * @return the builder
+     */
     public SimpleButtonBuilder description(String description) {
         SimpleButtonBuilder builder = clone();
         builder.description.add(StaticMenus.getMiniMessage().deserialize(description));

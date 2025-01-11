@@ -89,6 +89,20 @@ public class PlayerSkullButtonBuilder implements Cloneable, ButtonBuilder {
     }
 
     /**
+     * Set the description of the button
+     *
+     * @param description the description
+     * @return the builder
+     */
+    public PlayerSkullButtonBuilder componentDescription(List<Component> description) {
+        PlayerSkullButtonBuilder builder = clone();
+        builder.description = description;
+
+        return builder;
+    }
+
+
+    /**
      * Set the amount of the button
      *
      * @param amount the amount

@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.Map;
 
 public interface Button {
     Button BACK = new BackButton();
