@@ -229,6 +229,13 @@ public class PagedMenuBuilder implements Cloneable, MenuBuilder {
     }
 
     @Override
+    public PagedMenuBuilder onComeBack(ViewerAction callback) {
+        PagedMenuBuilder builder = clone();
+        builder.options = builder.options.onComeBack(callback);
+        return builder;
+    }
+
+    @Override
     public PagedMenu build(MenuViewer viewer) {
         if (id == null) throw new IllegalStateException("ID must be set");
         if (title == null) throw new IllegalStateException("Title must be set");

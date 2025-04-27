@@ -1,5 +1,10 @@
 package net.staticstudios.menus.button;
 
+import net.kyori.adventure.text.Component;
+import net.staticstudios.menus.action.ButtonAction;
+
+import java.util.List;
+
 public interface ButtonBuilder {
 
     /**
@@ -21,5 +26,28 @@ public interface ButtonBuilder {
         ButtonRegistry.register(namespace, id, button);
         return button;
     }
+
+    ButtonBuilder name(String name);
+
+    ButtonBuilder name(Component name);
+
+    ButtonBuilder description(String... description);
+
+    ButtonBuilder description(List<String> description);
+
+    ButtonBuilder componentDescription(List<Component> description);
+
+    ButtonBuilder description(String description);
+
+    ButtonBuilder amount(int amount);
+
+    ButtonBuilder enchanted(boolean enchanted);
+
+    ButtonBuilder onLeftClick(ButtonAction action);
+
+    ButtonBuilder onRightClick(ButtonAction action);
+
+    ButtonBuilder onClick(ButtonAction action);
+
 
 }

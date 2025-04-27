@@ -1,10 +1,13 @@
 package net.staticstudios.menus.options;
 
+import net.staticstudios.menus.action.ViewerAction;
 import net.staticstudios.menus.button.Button;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MenuOptions implements Cloneable {
     private @NotNull Button defaultPlaceholder = Button.EMPTY;
+    private ViewerAction onComeBack = null;
 
     public MenuOptions() {
     }
@@ -17,6 +20,16 @@ public class MenuOptions implements Cloneable {
 
     public @NotNull Button defaultPlaceholder() {
         return defaultPlaceholder;
+    }
+
+    public MenuOptions onComeBack(ViewerAction onComeBack) {
+        MenuOptions opts = clone();
+        opts.onComeBack = onComeBack;
+        return opts;
+    }
+
+    public @Nullable ViewerAction onComeBack() {
+        return onComeBack;
     }
 
     public MenuOptions clone() {

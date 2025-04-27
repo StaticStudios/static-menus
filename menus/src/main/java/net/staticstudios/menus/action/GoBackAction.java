@@ -17,5 +17,9 @@ public class GoBackAction implements ButtonAction {
             return;
         }
         menuToOpen.open(false, false);
+        ViewerAction onComeBack = menuToOpen.getOptions().onComeBack();
+        if (onComeBack != null) {
+            onComeBack.invoke(viewer);
+        }
     }
 }

@@ -6,6 +6,7 @@ import net.staticstudios.menus.action.ViewerAction;
 import net.staticstudios.menus.button.Button;
 import net.staticstudios.menus.options.MenuOptions;
 import net.staticstudios.menus.viewer.MenuViewer;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class SimpleMenuBuilder implements Cloneable, MenuBuilder {
     private Component title;
     private List<Button> buttons;
     private MenuOptions options = new MenuOptions();
+    private @Nullable ViewerAction onComeBack;
 
 
     protected SimpleMenuBuilder(boolean mutable) {
@@ -160,6 +162,14 @@ public class SimpleMenuBuilder implements Cloneable, MenuBuilder {
         builder.options = builder.options.defaultPlaceholder(defaultPlaceholder);
         return builder;
     }
+
+    @Override
+    public SimpleMenuBuilder onComeBack(ViewerAction callback) {
+        SimpleMenuBuilder builder = clone();
+        builder.options = builder.options.onComeBack(callback);
+        return builder;
+    }
+
 
     @Override
     public Menu build(MenuViewer viewer) {
