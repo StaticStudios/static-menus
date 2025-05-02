@@ -1,5 +1,8 @@
 package net.staticstudios.menus.button;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemLore;
+import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.action.ButtonAction;
 import net.staticstudios.menus.menu.Menu;
 import net.staticstudios.menus.viewer.MenuViewer;
@@ -17,17 +20,41 @@ import java.util.Map;
 public class SimpleButton implements Button {
     private final ItemStack itemStack;
     private final Map<Action, List<ButtonAction>> actions;
+    private final List<ButtonUpdateAction<SimpleButton>> updateActions;
 
     /**
      * Create a new simple button
-     * @param source the source item stack
+     *
+     * @param source  the source item stack
      * @param actions the actions
      */
-    protected SimpleButton(ItemStack source, Map<Action, List<ButtonAction>> actions) {
+    protected SimpleButton(ItemStack source, Map<Action, List<ButtonAction>> actions, @NotNull List<ButtonUpdateAction<SimpleButton>> updateActions) {
         this.itemStack = new ItemStack(source);
         this.actions = actions;
+        this.updateActions = updateActions;
 
         this.itemStack.editMeta(meta -> meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP));
+    }
+
+    @Override
+    public void setName(Component name) {
+        itemStack.setData(DataComponentTypes.CUSTOM_NAME, name);
+    }
+
+    @Override
+    public void componentDescription(List<Component> description) {
+        itemStack.setData(DataComponentTypes.LORE, ItemLore.lore(description));
+    }
+
+    @Override
+    public boolean tick() {
+        boolean update = false;
+        for (ButtonUpdateAction<SimpleButton> updateAction : updateActions) {
+            if (updateAction.tick(this)) {
+                update = true;
+            }
+        }
+        return update;
     }
 
     @Nullable

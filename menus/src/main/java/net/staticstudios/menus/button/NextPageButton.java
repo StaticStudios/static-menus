@@ -1,5 +1,6 @@
 package net.staticstudios.menus.button;
 
+import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.StaticMenus;
 import net.staticstudios.menus.menu.Menu;
 import net.staticstudios.menus.menu.PagedMenu;
@@ -9,6 +10,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class NextPageButton implements Button {
     protected NextPageButton() {
@@ -32,5 +35,21 @@ public class NextPageButton implements Button {
         if (menu instanceof PagedMenu pagedMenu) {
             pagedMenu.nextPage();
         }
+    }
+
+    @Override
+    public void setName(Component name) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void componentDescription(List<Component> description) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean tick() {
+        // no-op
+        return false;
     }
 }

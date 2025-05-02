@@ -48,6 +48,4 @@ public interface ButtonBuilder {
     ButtonBuilder onRightClick(ButtonAction action);
 
     ButtonBuilder onClick(ButtonAction action);
-
-
 }

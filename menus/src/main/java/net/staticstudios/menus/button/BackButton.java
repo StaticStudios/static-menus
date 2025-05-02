@@ -1,5 +1,6 @@
 package net.staticstudios.menus.button;
 
+import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.StaticMenus;
 import net.staticstudios.menus.action.ButtonAction;
 import net.staticstudios.menus.menu.Menu;
@@ -8,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class BackButton implements Button {
     protected BackButton() {
@@ -26,6 +29,22 @@ public class BackButton implements Button {
         });
 
         return item;
+    }
+
+    @Override
+    public void setName(Component name) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void componentDescription(List<Component> description) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean tick() {
+        // no-op
+        return false;
     }
 
     @Override

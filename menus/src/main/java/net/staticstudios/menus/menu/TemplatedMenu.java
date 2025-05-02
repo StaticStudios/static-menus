@@ -102,4 +102,9 @@ public class TemplatedMenu implements Menu {
 
         return inventory;
     }
+    
+    @Override
+    public void tick() {
+        buttons.forEach(Button::tick);
+    }
 }

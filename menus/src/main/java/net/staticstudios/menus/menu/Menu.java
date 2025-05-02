@@ -103,6 +103,11 @@ public interface Menu extends InventoryHolder {
      */
     MenuOptions getOptions();
 
+    /**
+     * Tick this menu's update action(s)
+     */
+    void tick();
+
     enum Action {
         OPEN,
         CLOSE,

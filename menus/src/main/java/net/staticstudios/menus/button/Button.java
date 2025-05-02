@@ -1,6 +1,7 @@
 package net.staticstudios.menus.button;
 
 import net.kyori.adventure.text.Component;
+import net.staticstudios.menus.StaticMenus;
 import net.staticstudios.menus.menu.Menu;
 import net.staticstudios.menus.viewer.MenuViewer;
 import org.bukkit.Material;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 
 public interface Button {
     Button BACK = new BackButton();
@@ -46,6 +48,18 @@ public interface Button {
     @Nullable
     ItemStack getItemRepresentation(MenuViewer viewer, Menu menu);
 
+    default void setName(String name) {
+        setName(StaticMenus.getMiniMessage().deserialize(name));
+    }
+
+    default void setDescription(List<String> description) {
+        componentDescription(description.stream().map(StaticMenus.getMiniMessage()::deserialize).toList());
+    }
+
+    void componentDescription(List<Component> description);
+
+    void setName(Component name);
+
     /**
      * Invoke the actions of the button
      *
@@ -54,6 +68,11 @@ public interface Button {
      * @param viewer the viewer
      */
     void invokeActions(@NotNull Action action, @NotNull Menu menu, @NotNull MenuViewer viewer);
+
+    /**
+     * Tick this button's update action(s)
+     */
+    boolean tick();
 
     enum Action {
         LEFT_CLICK,

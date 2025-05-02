@@ -12,10 +12,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class PlayerSkullButtonBuilder implements Cloneable, ButtonBuilder {
     private final boolean mutable;
     private final Map<Button.Action, List<ButtonAction>> actions = new HashMap<>();
+    private final List<ButtonUpdateAction<SimpleButton>> updateActions = new ArrayList<>();
     private Component name;
     private List<Component> description = new ArrayList<>();
     private boolean enchanted = false;
@@ -232,6 +234,13 @@ public class PlayerSkullButtonBuilder implements Cloneable, ButtonBuilder {
     }
 
 
+    public ButtonBuilder update(int tickInterval, Consumer<SimpleButton> action) {
+        PlayerSkullButtonBuilder builder = clone();
+        updateActions.add(new ButtonUpdateAction<>(tickInterval, action));
+
+        return builder;
+    }
+
     @Override
     public Button build() {
         if (playerProfile == null) throw new IllegalStateException("Player profile must be set");
@@ -251,7 +260,7 @@ public class PlayerSkullButtonBuilder implements Cloneable, ButtonBuilder {
             }
         });
 
-        return new SimpleButton(itemStack, actions);
+        return new SimpleButton(itemStack, actions, updateActions);
     }
 
 

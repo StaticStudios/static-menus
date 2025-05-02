@@ -153,6 +153,20 @@ public class PagedMenu implements Menu {
         return currentPageInventory;
     }
 
+    @Override
+    public void tick() {
+        boolean update = false;
+        for (Button button : buttons) {
+            if (button.tick()) {
+                update = true;
+            }
+        }
+
+        if (update) {
+            updateInventory();
+        }
+    }
+
     private int getPlaceholderCount() {
         return (int) template.chars().filter(c -> c == marker).count();
     }

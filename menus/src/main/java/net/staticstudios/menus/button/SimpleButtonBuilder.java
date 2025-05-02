@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class SimpleButtonBuilder implements Cloneable, ButtonBuilder {
     private final boolean mutable;
     private final Map<Button.Action, List<ButtonAction>> actions = new HashMap<>();
+    private final List<ButtonUpdateAction<SimpleButton>> updateActions = new ArrayList<>();
     private Component name;
     private List<Component> description = new ArrayList<>();
     private Material material = null;
@@ -186,6 +188,12 @@ public class SimpleButtonBuilder implements Cloneable, ButtonBuilder {
         return builder;
     }
 
+    public ButtonBuilder update(int tickInterval, Consumer<SimpleButton> action) {
+        SimpleButtonBuilder builder = clone();
+        updateActions.add(new ButtonUpdateAction<>(tickInterval, action));
+
+        return builder;
+    }
 
     @Override
     public Button build() {
@@ -207,7 +215,7 @@ public class SimpleButtonBuilder implements Cloneable, ButtonBuilder {
 
         itemStack.setAmount(amount);
 
-        return new SimpleButton(itemStack, actions);
+        return new SimpleButton(itemStack, actions, updateActions);
     }
 
 
