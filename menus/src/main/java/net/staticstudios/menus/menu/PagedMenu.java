@@ -172,18 +172,22 @@ public class PagedMenu implements Menu {
     }
 
     private void updateInventory() {
-        boolean reachedEndOfPlaceholders = false;
         int skippedLines = 0;
         int nextPageButtonIndex = -1;
         int previousPageButtonIndex = -1;
         int buttonIndex = page * getPlaceholderCount();
 
+        int firstMarkerIndex = template.indexOf(marker);
+        int buttonsLeft = Math.max(0, buttons.size() - buttonIndex);
+        int buttonsPlaced = 0;
+
         List<Button[]> lines = new ArrayList<>();
         for (int i = 0; i < template.length(); i += 9) {
             Button[] line = new Button[9];
 
-            //Skip all lines containing placeholders
-            if (reachedEndOfPlaceholders && shrinkToFit && template.substring(i, i + 9).chars().anyMatch(c -> c == marker)) {
+            //Skip all lines containing placeholders, when we have no buttons left
+            //Note: if this is the first line with markers, don't skip it. an empty menu looks bad - it will be replaced with placeholders instead
+            if (shrinkToFit && buttonsLeft - buttonsPlaced == 0 && firstMarkerIndex < i && template.substring(i, i + 9).chars().anyMatch(c -> c == marker)) {
                 skippedLines++;
                 continue;
             }
@@ -193,9 +197,9 @@ public class PagedMenu implements Menu {
                 if (c == marker) {
                     if (buttonIndex < buttons.size()) {
                         line[j] = buttons.get(buttonIndex);
+                        buttonsPlaced++;
                     } else {
                         line[j] = fallback;
-                        reachedEndOfPlaceholders = true;
                     }
                     buttonIndex++;
                 } else {
