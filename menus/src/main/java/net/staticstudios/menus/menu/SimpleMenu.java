@@ -57,7 +57,7 @@ public class SimpleMenu implements Menu {
 
     @Override
     public @NotNull Button getButton(int slot) {
-        return buttons.get(slot);
+        return buttons.get(slot) != null ? buttons.get(slot) : options.defaultPlaceholder();
     }
 
     @Override

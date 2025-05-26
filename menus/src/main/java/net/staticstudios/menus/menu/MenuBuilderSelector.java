@@ -46,7 +46,6 @@ public class MenuBuilderSelector {
 
     /**
      * Get a mutable {@link SimpleMenu} builder.
-     * This is primarily for internal use.
      *
      * @return The builder
      */
@@ -56,7 +55,6 @@ public class MenuBuilderSelector {
 
     /**
      * Get a mutable {@link TemplatedMenu} builder.
-     * This is primarily for internal use.
      *
      * @param template The template
      * @return The builder
@@ -67,12 +65,31 @@ public class MenuBuilderSelector {
 
     /**
      * Get a mutable {@link PagedMenu} builder.
-     * This is primarily for internal use.
      *
      * @param template The template
      * @return The builder
      */
     public PagedMenuBuilder mutablePaged(String template) {
         return new PagedMenuBuilder(true, template);
+    }
+
+    /**
+     * Get a mutable {@link InteractableMenuBuilder}.
+     *
+     * @param template The template for the menu.
+     * @return The builder for the interactable menu.
+     */
+    public InteractableMenuBuilder interactable(String template) {
+        return new InteractableMenuBuilder(false, template);
+    }
+
+    /**
+     * Get a mutable {@link InteractableMenuBuilder}.
+     *
+     * @param template The template for the menu.
+     * @return The builder for the mutable interactable menu.
+     */
+    public InteractableMenuBuilder mutableInteractable(String template) {
+        return new InteractableMenuBuilder(true, template);
     }
 }
