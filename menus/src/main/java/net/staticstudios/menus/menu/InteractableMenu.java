@@ -160,6 +160,26 @@ public class InteractableMenu implements Menu {
         return items;
     }
 
+    public Map<Integer, ItemStack> getIndexedItems() {
+        Map<Integer, ItemStack> indexedItems = new HashMap<>();
+        for (int i = 0; i < buttons.length; i++) {
+            if (template.charAt(i) == marker) {
+                ItemStack item = inventory.getItem(i);
+                if (item != null) {
+                    indexedItems.put(i, item);
+                }
+            }
+        }
+        return indexedItems;
+    }
+
+    public void setItem(int slot, ItemStack item) {
+        Preconditions.checkArgument(isInteractable(slot), "Cannot set item in non-interactable slot");
+        Preconditions.checkArgument(isInteractable(item), "Item does not match interactable criteria");
+        inventory.setItem(slot, item);
+        callUpdateActions();
+    }
+
     /**
      * Clear all non-button items from the menu.
      */
