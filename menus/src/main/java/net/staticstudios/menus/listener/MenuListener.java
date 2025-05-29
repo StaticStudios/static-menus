@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -23,17 +24,61 @@ public class MenuListener implements Listener {
             return;
         }
         Menu menu = null;
-        if (!(e.getClickedInventory().getHolder() instanceof Menu m)) {
+        if (!(e.getClickedInventory().getHolder(false) instanceof Menu m)) {
             if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
-                if (e.getInventory().getHolder() instanceof Menu toHolder) {
+                if (e.getInventory().getHolder(false) instanceof Menu toHolder) {
                     if (toHolder instanceof InteractableMenu interactableMenu && interactableMenu.isInteractable(e.getCurrentItem())) {
                         menu = toHolder;
+
+                        if (e.getCurrentItem() == null || e.getCurrentItem().isEmpty()) {
+                            e.setCancelled(true);
+                            return;
+                        }
+
+                        int slot = -1;
+                        for (int i = 0; i < e.getInventory().getSize(); i++) {
+                            if (!interactableMenu.isInteractable(i)) {
+                                continue;
+                            }
+                            ItemStack inSlot = e.getInventory().getItem(i);
+                            if (inSlot == null || inSlot.getType().isEmpty()) {
+                                slot = i;
+                                break;
+                            }
+
+                            int maxCount = inSlot.getMaxStackSize();
+                            if (inSlot.isSimilar(e.getCurrentItem()) && inSlot.getAmount() < maxCount) {
+                                slot = i;
+                                break;
+                            }
+                        }
+
+                        e.setCancelled(true);
+                        if (slot == -1) {
+                            return;
+                        }
+
+                        ItemStack inSlot = e.getInventory().getItem(slot);
+                        if (inSlot == null || inSlot.getType().isEmpty()) {
+                            e.getInventory().setItem(slot, e.getCurrentItem());
+                            e.getCurrentItem().setAmount(0);
+                            return;
+                        }
+
+                        int amountToMove = Math.min(e.getCurrentItem().getAmount(), inSlot.getMaxStackSize() - inSlot.getAmount());
+
+                        inSlot.setAmount(inSlot.getAmount() + amountToMove);
+                        e.getInventory().setItem(slot, inSlot);
+                        e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() - amountToMove);
+
                         Bukkit.getScheduler().runTaskLater(StaticMenus.getPlugin(), () -> {
                             Player player = Bukkit.getPlayer(playerId);
-                            if (player != null && interactableMenu == player.getOpenInventory().getTopInventory().getHolder()) {
+                            if (player != null && interactableMenu == player.getOpenInventory().getTopInventory().getHolder(false)) {
                                 interactableMenu.callUpdateActions();
                             }
                         }, 1);
+                        return;
+
                     } else {
                         e.setCancelled(true);
                     }
@@ -49,7 +94,7 @@ public class MenuListener implements Listener {
             } else {
                 Bukkit.getScheduler().runTaskLater(StaticMenus.getPlugin(), () -> {
                     Player player = Bukkit.getPlayer(playerId);
-                    if (player != null && interactableMenu == player.getOpenInventory().getTopInventory().getHolder()) {
+                    if (player != null && interactableMenu == player.getOpenInventory().getTopInventory().getHolder(false)) {
                         interactableMenu.callUpdateActions();
                     }
                 }, 1);
@@ -71,21 +116,20 @@ public class MenuListener implements Listener {
     @EventHandler
     void onDrag(InventoryDragEvent e) {
         UUID playerId = e.getWhoClicked().getUniqueId();
-        if (e.getInventory().getHolder() instanceof Menu m) {
+        if (e.getInventory().getHolder(false) instanceof Menu m) {
             if (m instanceof InteractableMenu interactableMenu) {
                 for (int slot : e.getInventorySlots()) {
-                    if (!(interactableMenu.isInteractable(e.getNewItems().get(slot)))) {
+                    if (!interactableMenu.isInteractable(slot) || !(interactableMenu.isInteractable(e.getNewItems().get(slot)))) {
                         e.setCancelled(true);
                         return;
-                    } else {
-                        Bukkit.getScheduler().runTaskLater(StaticMenus.getPlugin(), () -> {
-                            Player player = Bukkit.getPlayer(playerId);
-                            if (player != null && interactableMenu == player.getOpenInventory().getTopInventory().getHolder()) {
-                                interactableMenu.callUpdateActions();
-                            }
-                        }, 1);
                     }
                 }
+                Bukkit.getScheduler().runTaskLater(StaticMenus.getPlugin(), () -> {
+                    Player player = Bukkit.getPlayer(playerId);
+                    if (player != null && interactableMenu == player.getOpenInventory().getTopInventory().getHolder(false)) {
+                        interactableMenu.callUpdateActions();
+                    }
+                }, 1);
             } else {
                 e.setCancelled(true);
             }
@@ -96,7 +140,7 @@ public class MenuListener implements Listener {
 
     @EventHandler
     void onClose(InventoryCloseEvent e) {
-        if (!(e.getInventory().getHolder() instanceof Menu menu)) {
+        if (!(e.getInventory().getHolder(false) instanceof Menu menu)) {
             return;
         }
         if (!e.getReason().equals(InventoryCloseEvent.Reason.OPEN_NEW) && !e.getReason().equals(InventoryCloseEvent.Reason.PLUGIN)) {
@@ -109,7 +153,7 @@ public class MenuListener implements Listener {
 
     @EventHandler
     void onOpen(InventoryOpenEvent e) {
-        if (e.getInventory().getHolder() instanceof Menu) {
+        if (e.getInventory().getHolder(false) instanceof Menu) {
             return;
         }
         MenuViewer viewer = StaticMenus.getViewer((Player) e.getPlayer());
