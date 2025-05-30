@@ -62,14 +62,12 @@ public class MenuListener implements Listener {
                         if (inSlot == null || inSlot.getType().isEmpty()) {
                             e.getInventory().setItem(slot, e.getCurrentItem());
                             e.getCurrentItem().setAmount(0);
-                            return;
+                        } else {
+                            int amountToMove = Math.min(e.getCurrentItem().getAmount(), inSlot.getMaxStackSize() - inSlot.getAmount());
+                            inSlot.setAmount(inSlot.getAmount() + amountToMove);
+                            e.getInventory().setItem(slot, inSlot);
+                            e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() - amountToMove);
                         }
-
-                        int amountToMove = Math.min(e.getCurrentItem().getAmount(), inSlot.getMaxStackSize() - inSlot.getAmount());
-
-                        inSlot.setAmount(inSlot.getAmount() + amountToMove);
-                        e.getInventory().setItem(slot, inSlot);
-                        e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() - amountToMove);
 
                         Bukkit.getScheduler().runTaskLater(StaticMenus.getPlugin(), () -> {
                             Player player = Bukkit.getPlayer(playerId);
