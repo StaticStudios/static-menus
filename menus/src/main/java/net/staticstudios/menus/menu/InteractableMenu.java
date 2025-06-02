@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 public class InteractableMenu implements Menu {
     private final Component inventoryTitle;
@@ -30,11 +29,11 @@ public class InteractableMenu implements Menu {
     private final Map<Character, Button> buttonMappings;
     private final String template;
     private final char marker;
-    private final List<Predicate<ItemStack>> itemPredicates;
+    private final List<Filter> filters;
     private final List<UpdateAction> updateActions;
     private Inventory inventory;
 
-    public InteractableMenu(String id, MenuViewer viewer, Component inventoryTitle, int size, @NotNull Map<Action, List<ViewerAction>> actions, String template, char marker, @NotNull Map<Character, Button> buttonMappings, @NotNull MenuOptions options, List<Predicate<ItemStack>> itemPredicates, List<UpdateAction> updateActions) {
+    public InteractableMenu(String id, MenuViewer viewer, Component inventoryTitle, int size, @NotNull Map<Action, List<ViewerAction>> actions, String template, char marker, @NotNull Map<Character, Button> buttonMappings, @NotNull MenuOptions options, List<Filter> filters, List<UpdateAction> updateActions) {
         this.inventoryTitle = inventoryTitle;
         this.id = id;
         this.actions = new HashMap<>(actions);
@@ -45,7 +44,7 @@ public class InteractableMenu implements Menu {
         this.viewer = viewer;
         this.options = options;
         this.buttons = new Button[size];
-        this.itemPredicates = itemPredicates;
+        this.filters = filters;
         this.updateActions = updateActions;
         Preconditions.checkArgument(buttonMappings.keySet().stream().noneMatch(c -> marker == c), "Marker character cannot be used as a button mapping key");
 
@@ -88,8 +87,8 @@ public class InteractableMenu implements Menu {
         return template.charAt(slot) == marker;
     }
 
-    public boolean isInteractable(ItemStack item) {
-        return itemPredicates.stream().allMatch(predicate -> predicate.test(item));
+    public boolean isInteractable(int slot, ItemStack item) {
+        return filters.stream().allMatch(predicate -> predicate.test(slot, item));
     }
 
     @Override
@@ -175,7 +174,7 @@ public class InteractableMenu implements Menu {
 
     public void setItem(int slot, ItemStack item) {
         Preconditions.checkArgument(isInteractable(slot), "Cannot set item in non-interactable slot");
-        Preconditions.checkArgument(isInteractable(item), "Item does not match interactable criteria");
+        Preconditions.checkArgument(isInteractable(slot, item), "Item does not match interactable criteria");
         inventory.setItem(slot, item);
         callUpdateActions();
     }
@@ -200,5 +199,9 @@ public class InteractableMenu implements Menu {
 
     public interface UpdateAction {
         void apply(InteractableMenu menu, MenuViewer viewer, List<ItemStack> items);
+    }
+
+    public interface Filter {
+        boolean test(int slot, ItemStack item);
     }
 }

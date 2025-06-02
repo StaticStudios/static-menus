@@ -21,7 +21,7 @@ public class InteractableMenuBuilder implements Cloneable, MenuBuilder {
     private final int size;
     private final Map<Character, Button> buttonMappings = new HashMap<>();
     private final String template;
-    private final List<Predicate<ItemStack>> itemPredicates = new ArrayList<>();
+    private final List<InteractableMenu.Filter> filters = new ArrayList<>();
     private final List<InteractableMenu.UpdateAction> updateAction = new ArrayList<>();
     private char marker;
     private String id;
@@ -153,12 +153,22 @@ public class InteractableMenuBuilder implements Cloneable, MenuBuilder {
     /**
      * Filter what items can be placed in the menu.
      *
-     * @param itemPredicate The predicate to filter items
+     * @param filter The predicate to filter items
      * @return The builder
      */
-    public InteractableMenuBuilder filter(Predicate<ItemStack> itemPredicate) {
+    public InteractableMenuBuilder filter(Predicate<ItemStack> filter) {
+        return filter((slot, item) -> filter.test(item));
+    }
+
+    /**
+     * Filter what items can be placed in the menu.
+     *
+     * @param filter The filter to apply
+     * @return The builder
+     */
+    public InteractableMenuBuilder filter(InteractableMenu.Filter filter) {
         InteractableMenuBuilder builder = clone();
-        builder.itemPredicates.add(itemPredicate);
+        builder.filters.add(filter);
         return builder;
     }
 
@@ -174,7 +184,7 @@ public class InteractableMenuBuilder implements Cloneable, MenuBuilder {
         if (title == null) throw new IllegalStateException("Title must be set");
         if (marker == 0) throw new IllegalStateException("Marker must be set");
 
-        return new InteractableMenu(id, viewer, title, size, actions, template, marker, buttonMappings, options, itemPredicates, updateAction);
+        return new InteractableMenu(id, viewer, title, size, actions, template, marker, buttonMappings, options, filters, updateAction);
     }
 
     public InteractableMenuBuilder clone() {
@@ -185,7 +195,7 @@ public class InteractableMenuBuilder implements Cloneable, MenuBuilder {
             InteractableMenuBuilder clone = (InteractableMenuBuilder) super.clone();
             clone.actions.putAll(new HashMap<>(this.actions));
             clone.buttonMappings.putAll(new HashMap<>(this.buttonMappings));
-            clone.itemPredicates.addAll(new ArrayList<>(this.itemPredicates));
+            clone.filters.addAll(new ArrayList<>(this.filters));
             clone.options = this.options.clone();
             return clone;
         } catch (CloneNotSupportedException e) {

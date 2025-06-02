@@ -27,7 +27,7 @@ public class MenuListener implements Listener {
         if (!(e.getClickedInventory().getHolder(false) instanceof Menu m)) {
             if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
                 if (e.getInventory().getHolder(false) instanceof Menu toHolder) {
-                    if (toHolder instanceof InteractableMenu interactableMenu && interactableMenu.isInteractable(e.getCurrentItem())) {
+                    if (toHolder instanceof InteractableMenu interactableMenu) {
                         menu = toHolder;
 
                         if (e.getCurrentItem() == null || e.getCurrentItem().isEmpty()) {
@@ -55,6 +55,11 @@ public class MenuListener implements Listener {
 
                         e.setCancelled(true);
                         if (slot == -1) {
+                            return;
+                        }
+
+                        if (!interactableMenu.isInteractable(slot, e.getCurrentItem())) {
+                            e.setCancelled(true);
                             return;
                         }
 
@@ -87,7 +92,7 @@ public class MenuListener implements Listener {
             menu = m;
         }
         if (menu instanceof InteractableMenu interactableMenu && interactableMenu.isInteractable(e.getSlot())) {
-            if (!e.getCursor().isEmpty() && !interactableMenu.isInteractable(e.getCursor())) {
+            if (!e.getCursor().isEmpty() && !interactableMenu.isInteractable(e.getSlot(), e.getCursor())) {
                 e.setCancelled(true);
             } else {
                 Bukkit.getScheduler().runTaskLater(StaticMenus.getPlugin(), () -> {
@@ -117,7 +122,7 @@ public class MenuListener implements Listener {
         if (e.getInventory().getHolder(false) instanceof Menu m) {
             if (m instanceof InteractableMenu interactableMenu) {
                 for (int slot : e.getInventorySlots()) {
-                    if (!interactableMenu.isInteractable(slot) || !(interactableMenu.isInteractable(e.getNewItems().get(slot)))) {
+                    if (!interactableMenu.isInteractable(slot) || !(interactableMenu.isInteractable(slot, e.getNewItems().get(slot)))) {
                         e.setCancelled(true);
                         return;
                     }
