@@ -179,6 +179,12 @@ public class InteractableMenu implements Menu {
         callUpdateActions();
     }
 
+    public void removeItem(int slot) {
+        Preconditions.checkArgument(isInteractable(slot), "Cannot remove item from non-interactable slot");
+        inventory.setItem(slot, null);
+        callUpdateActions();
+    }
+
     /**
      * Clear all non-button items from the menu.
      */
