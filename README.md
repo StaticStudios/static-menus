@@ -16,8 +16,8 @@ Make sure to replace `VERSION_HERE` with the latest version available.
 ```gradle
 repositories {
   maven {
-      name "StaticStudios"
-      url "https://repo.staticstudios.net/releases"
+      name =  "StaticStudios"
+      url  = "https://repo.staticstudios.net/snapshots"
   }
 }
 
