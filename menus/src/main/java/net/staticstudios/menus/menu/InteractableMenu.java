@@ -52,7 +52,10 @@ public class InteractableMenu implements Menu {
         this.actions.computeIfAbsent(Action.CLOSE, k -> new ArrayList<>()).add(v -> {
             Player player = v.getPlayer();
             for (ItemStack item : getItems()) {
-                player.getInventory().addItem(item);
+                Map<Integer, ItemStack> extra = player.getInventory().addItem(item);
+                for (Map.Entry<Integer, ItemStack> entry : extra.entrySet()) {
+                    player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
+                }
             }
         });
 
