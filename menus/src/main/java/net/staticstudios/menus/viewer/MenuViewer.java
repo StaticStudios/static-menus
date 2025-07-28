@@ -29,7 +29,7 @@ public interface MenuViewer {
 
     default boolean isViewingMenu(String menuId) {
         Player player = getPlayer();
-        if (player.getOpenInventory().getTopInventory() instanceof Menu menu) {
+        if (player.getOpenInventory().getTopInventory().getHolder(false) instanceof Menu menu) {
             return menu.getId().equals(menuId);
         }
 
