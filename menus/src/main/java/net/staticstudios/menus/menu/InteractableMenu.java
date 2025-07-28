@@ -58,8 +58,6 @@ public class InteractableMenu implements Menu {
                 }
             }
         });
-
-        //todo: add an action for when the menu is updated (items are updated)
     }
 
     @Override
