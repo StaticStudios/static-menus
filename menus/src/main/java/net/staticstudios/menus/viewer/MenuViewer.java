@@ -2,6 +2,7 @@ package net.staticstudios.menus.viewer;
 
 import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.StaticMenus;
+import net.staticstudios.menus.menu.Menu;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -26,6 +27,14 @@ public interface MenuViewer {
         sendMessage(StaticMenus.getMiniMessage().deserialize(message));
     }
 
+    default boolean isViewingMenu(String menuId) {
+        Player player = getPlayer();
+        if (player.getOpenInventory().getTopInventory() instanceof Menu menu) {
+            return menu.getId().equals(menuId);
+        }
+
+        return false;
+    }
 
     @Override
     boolean equals(Object obj);
