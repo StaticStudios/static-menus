@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class InteractableMenu implements Menu {
     private final Component inventoryTitle;
@@ -31,9 +32,10 @@ public class InteractableMenu implements Menu {
     private final char marker;
     private final List<Filter> filters;
     private final List<UpdateAction> updateActions;
+    private final Predicate<MenuViewer> canInteractPredicate;
     private Inventory inventory;
 
-    public InteractableMenu(String id, MenuViewer viewer, Component inventoryTitle, int size, @NotNull Map<Action, List<ViewerAction>> actions, String template, char marker, @NotNull Map<Character, Button> buttonMappings, @NotNull MenuOptions options, List<Filter> filters, List<UpdateAction> updateActions) {
+    public InteractableMenu(String id, MenuViewer viewer, Component inventoryTitle, int size, @NotNull Map<Action, List<ViewerAction>> actions, String template, char marker, @NotNull Map<Character, Button> buttonMappings, @NotNull MenuOptions options, List<Filter> filters, List<UpdateAction> updateActions, Predicate<MenuViewer> canInteractPredicate) {
         this.inventoryTitle = inventoryTitle;
         this.id = id;
         this.actions = new HashMap<>(actions);
@@ -46,6 +48,7 @@ public class InteractableMenu implements Menu {
         this.buttons = new Button[size];
         this.filters = filters;
         this.updateActions = updateActions;
+        this.canInteractPredicate = canInteractPredicate;
         Preconditions.checkArgument(buttonMappings.keySet().stream().noneMatch(c -> marker == c), "Marker character cannot be used as a button mapping key");
 
         // Ensure that on close they get their items back
@@ -85,11 +88,15 @@ public class InteractableMenu implements Menu {
     }
 
     public boolean isInteractable(int slot) {
-        return template.charAt(slot) == marker;
+        return canInteractPredicate.test(viewer) && template.charAt(slot) == marker;
     }
 
     public boolean isInteractable(int slot, ItemStack item) {
-        return filters.stream().allMatch(predicate -> predicate.test(slot, item));
+        return canInteractPredicate.test(viewer) && filters.stream().allMatch(predicate -> predicate.test(slot, item));
+    }
+
+    public boolean isMenuInteractable() {
+        return canInteractPredicate.test(viewer);
     }
 
     @Override

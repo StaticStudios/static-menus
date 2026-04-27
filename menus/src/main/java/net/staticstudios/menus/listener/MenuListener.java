@@ -92,7 +92,7 @@ public class MenuListener implements Listener {
             menu = m;
         }
         if (menu instanceof InteractableMenu interactableMenu && interactableMenu.isInteractable(e.getSlot())) {
-            if (!e.getCursor().isEmpty() && !interactableMenu.isInteractable(e.getSlot(), e.getCursor())) {
+            if (!interactableMenu.isMenuInteractable() || !e.getCursor().isEmpty() && !interactableMenu.isInteractable(e.getSlot(), e.getCursor())) {
                 e.setCancelled(true);
             } else {
                 Bukkit.getScheduler().runTaskLater(StaticMenus.getPlugin(), () -> {
@@ -121,6 +121,10 @@ public class MenuListener implements Listener {
         UUID playerId = e.getWhoClicked().getUniqueId();
         if (e.getInventory().getHolder(false) instanceof Menu m) {
             if (m instanceof InteractableMenu interactableMenu) {
+                if (!interactableMenu.isMenuInteractable()) {
+                    e.setCancelled(true);
+                    return;
+                }
                 for (int slot : e.getInventorySlots()) {
                     if (!interactableMenu.isInteractable(slot) || !(interactableMenu.isInteractable(slot, e.getNewItems().get(slot)))) {
                         e.setCancelled(true);

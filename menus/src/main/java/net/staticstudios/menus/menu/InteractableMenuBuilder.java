@@ -27,6 +27,7 @@ public class InteractableMenuBuilder implements Cloneable, MenuBuilder {
     private String id;
     private Component title;
     private MenuOptions options = new MenuOptions();
+    private Predicate<MenuViewer> isMenuInteractablePredicate = viewer -> true;
 
     protected InteractableMenuBuilder(boolean mutable, String template) {
         this.mutable = mutable;
@@ -178,13 +179,19 @@ public class InteractableMenuBuilder implements Cloneable, MenuBuilder {
         return builder;
     }
 
+    public InteractableMenuBuilder canInteract(Predicate<MenuViewer> predicate) {
+        InteractableMenuBuilder builder = clone();
+        builder.isMenuInteractablePredicate = predicate;
+        return builder;
+    }
+
     @Override
     public Menu build(MenuViewer viewer) {
         if (id == null) throw new IllegalStateException("ID must be set");
         if (title == null) throw new IllegalStateException("Title must be set");
         if (marker == 0) throw new IllegalStateException("Marker must be set");
 
-        return new InteractableMenu(id, viewer, title, size, actions, template, marker, buttonMappings, options, filters, updateAction);
+        return new InteractableMenu(id, viewer, title, size, actions, template, marker, buttonMappings, options, filters, updateAction, isMenuInteractablePredicate);
     }
 
     public InteractableMenuBuilder clone() {
