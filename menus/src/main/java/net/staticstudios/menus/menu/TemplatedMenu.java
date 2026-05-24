@@ -9,6 +9,7 @@ import net.staticstudios.menus.viewer.MenuViewer;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,19 @@ public class TemplatedMenu implements Menu {
         return buttons.get(slot);
     }
 
+    public @Nullable Button getButton(char c) {
+        return buttonMappings.get(c);
+    }
+
+    public void setButton(char c, @NotNull Button button) {
+        buttonMappings.put(c, button);
+        for (int i = 0; i < template.length(); i++) {
+            if (template.charAt(i) == c) {
+                setButton(i, button);
+            }
+        }
+    }
+
     @Override
     public void open(boolean clearHistory, boolean pushToHistory) {
         if (clearHistory) {
@@ -102,7 +116,7 @@ public class TemplatedMenu implements Menu {
 
         return inventory;
     }
-    
+
     @Override
     public void tick() {
         buttons.forEach(Button::tick);
