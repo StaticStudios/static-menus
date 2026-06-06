@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.staticstudios.menus.StaticMenus;
 import net.staticstudios.menus.menu.Menu;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -34,6 +35,15 @@ public interface MenuViewer {
         }
 
         return false;
+    }
+
+    default @Nullable String getOpenMenuId() {
+        Player player = getPlayer();
+        if (player.getOpenInventory().getTopInventory().getHolder(false) instanceof Menu menu) {
+            return menu.getId();
+        }
+
+        return null;
     }
 
     @Override
