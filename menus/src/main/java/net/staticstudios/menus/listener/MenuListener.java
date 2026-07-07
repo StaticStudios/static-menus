@@ -87,6 +87,12 @@ public class MenuListener implements Listener {
                     }
                 }
             }
+            if (e.getAction() == InventoryAction.COLLECT_TO_CURSOR) {
+                if (e.getInventory().getHolder(false) instanceof InteractableMenu) {
+                    e.setCancelled(true);
+                    return;
+                }
+            }
             return;
         } else {
             menu = m;
