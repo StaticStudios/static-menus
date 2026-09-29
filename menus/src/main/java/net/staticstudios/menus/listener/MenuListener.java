@@ -20,6 +20,11 @@ public class MenuListener implements Listener {
     @EventHandler
     void onButtonClick(InventoryClickEvent e) {
         UUID playerId = e.getWhoClicked().getUniqueId();
+
+        if (e.getAction() == InventoryAction.COLLECT_TO_CURSOR && e.getInventory().getHolder(false) instanceof Menu) {
+            e.setCancelled(true);
+            return;
+        }
         if (e.getClickedInventory() == null) {
             return;
         }
@@ -87,18 +92,19 @@ public class MenuListener implements Listener {
                     }
                 }
             }
-            if (e.getAction() == InventoryAction.COLLECT_TO_CURSOR) {
-                if (e.getInventory().getHolder(false) instanceof InteractableMenu) {
-                    e.setCancelled(true);
-                    return;
-                }
-            }
             return;
         } else {
             menu = m;
         }
         if (menu instanceof InteractableMenu interactableMenu && interactableMenu.isInteractable(e.getSlot())) {
-            if (!interactableMenu.isMenuInteractable() || !e.getCursor().isEmpty() && !interactableMenu.isInteractable(e.getSlot(), e.getCursor())) {
+            ItemStack incomingItem = e.getCursor();
+            if (e.getClick() == ClickType.NUMBER_KEY) {
+                incomingItem = e.getWhoClicked().getInventory().getItem(e.getHotbarButton());
+            } else if (e.getClick() == ClickType.SWAP_OFFHAND) {
+                incomingItem = e.getWhoClicked().getInventory().getItemInOffHand();
+            }
+
+            if (!interactableMenu.isMenuInteractable() || incomingItem != null && !incomingItem.isEmpty() && !interactableMenu.isInteractable(e.getSlot(), incomingItem)) {
                 e.setCancelled(true);
             } else {
                 Bukkit.getScheduler().runTaskLater(StaticMenus.getPlugin(), () -> {
